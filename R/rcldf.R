@@ -18,8 +18,8 @@ cldf <- function(mdpath, load_bib=TRUE) {
         mdpath <- base::normalizePath(mdpath, mustWork = FALSE)
     }
 
-    h_mdpath <- find_valid_path_json(mdpath)
-    h <- csvwr::read_csvw(h_mdpath)
+    c_mdpath <- find_valid_path_json(mdpath)
+    c <- csvwr::read_csvw(h_mdpath)
 
     mdpath <- resolve_path(mdpath)
 
@@ -55,7 +55,7 @@ cldf <- function(mdpath, load_bib=TRUE) {
             filename, delim=",", col_names = TRUE, col_types = cols$cols, quote = '"', na = c("")
         )
     }
- list(o = o, h = h)
+ list(o = o, c = c)
 }
 
 #' @rdname cldf
