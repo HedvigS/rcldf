@@ -18,9 +18,10 @@ cldf <- function(mdpath, load_bib=TRUE) {
         mdpath <- base::normalizePath(mdpath, mustWork = FALSE)
     }
 
-    mdpath <- resolve_path(mdpath)
     h_mdpath <- find_valid_path_json(mdpath)
     h <- csvwr::read_csvw(h_mdpath)
+
+    mdpath <- resolve_path(mdpath)
 
     o <- structure(list(tables = list(), name=mdpath$path), class = "cldf")
     o$resources <- list()
@@ -39,8 +40,6 @@ cldf <- function(mdpath, load_bib=TRUE) {
     }
 
     # identify missing character
-
-
     for (i in 1:nrow(o$metadata$tables)) {
         filename <- file.path(o$base_dir, o$metadata$tables[i, "url"])
 
@@ -56,7 +55,7 @@ cldf <- function(mdpath, load_bib=TRUE) {
             filename, delim=",", col_names = TRUE, col_types = cols$cols, quote = '"', na = c("")
         )
     }
-    list(o = o, h = h)
+ list(o = o, h = h)
 }
 
 #' @rdname cldf
