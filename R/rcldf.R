@@ -10,15 +10,6 @@
 #' @examples
 #' cldfobj <- cldf(system.file("extdata/huon", "cldf-metadata.json", package = "rcldf"))
 
-mdpath <- "tests/testthat/examples/wals_1A_cldf/"
-library("csvwr")
-
-t <- csvwr::read_csvw("tests/testthat/examples/wals_1A_cldf/StructureDataset-metadata.json")
-ts <- t$tables
-
-
-
-
 cldf <- function(mdpath, load_bib=TRUE) {
     # is it a url?
     if (is_url(mdpath)) {
@@ -28,14 +19,8 @@ cldf <- function(mdpath, load_bib=TRUE) {
     }
 
     mdpath <- resolve_path(mdpath)
-
-    h <- csvwr::read_csvw(mdpath)
-
-    h$tables[[1]]$dataframe
-
-for(i in    h$tables) {
-    print(i$`dc:conformsTo`)
-}
+    h_mdpath <- find_valid_path_json(mdpath)
+    h <- csvwr::read_csvw(h_mdpath)
 
     o <- structure(list(tables = list(), name=mdpath$path), class = "cldf")
     o$resources <- list()
@@ -71,7 +56,7 @@ for(i in    h$tables) {
             filename, delim=",", col_names = TRUE, col_types = cols$cols, quote = '"', na = c("")
         )
     }
-    o
+    list(o = o, h = h)
 }
 
 #' @rdname cldf
