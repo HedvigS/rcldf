@@ -9,6 +9,16 @@
 #' @export
 #' @examples
 #' cldfobj <- cldf(system.file("extdata/huon", "cldf-metadata.json", package = "rcldf"))
+
+mdpath <- "tests/testthat/examples/wals_1A_cldf/"
+library("csvwr")
+
+t <- csvwr::read_csvw("tests/testthat/examples/wals_1A_cldf/StructureDataset-metadata.json")
+ts <- t$tables
+
+
+
+
 cldf <- function(mdpath, load_bib=TRUE) {
     # is it a url?
     if (is_url(mdpath)) {
@@ -18,6 +28,14 @@ cldf <- function(mdpath, load_bib=TRUE) {
     }
 
     mdpath <- resolve_path(mdpath)
+
+    h <- csvwr::read_csvw(mdpath)
+
+    h$tables[[1]]$dataframe
+
+for(i in    h$tables) {
+    print(i$`dc:conformsTo`)
+}
 
     o <- structure(list(tables = list(), name=mdpath$path), class = "cldf")
     o$resources <- list()
@@ -36,7 +54,7 @@ cldf <- function(mdpath, load_bib=TRUE) {
     }
 
     # identify missing character
-    
+
 
     for (i in 1:nrow(o$metadata$tables)) {
         filename <- file.path(o$base_dir, o$metadata$tables[i, "url"])
